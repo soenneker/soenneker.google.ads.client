@@ -1,4 +1,4 @@
-# Contributing to Soenneker.Google.Ads.Client
+﻿# Contributing to Soenneker.Google.Ads.Client
 
 We're excited that you're interested in contributing!
 
