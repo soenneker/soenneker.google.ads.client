@@ -3,17 +3,15 @@ using Google.Ads.GoogleAds.Lib;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Soenneker.Extensions.Configuration;
-using Soenneker.Extensions.ValueTask;
 using Soenneker.Google.Ads.Client.Abstract;
 using Soenneker.Utils.AsyncSingleton;
-using System;
 using System.Threading.Tasks;
 using System.Threading;
 
 namespace Soenneker.Google.Ads.Client;
 
 /// <inheritdoc cref="IGoogleAdsClientUtil"/>
-public class GoogleAdsClientUtil: IGoogleAdsClientUtil
+public sealed class GoogleAdsClientUtil: IGoogleAdsClientUtil
 {
     private readonly AsyncSingleton<GoogleAdsClient> _client;
 
@@ -41,15 +39,11 @@ public class GoogleAdsClientUtil: IGoogleAdsClientUtil
 
     public void Dispose()
     {
-        GC.SuppressFinalize(this);
-
         _client.Dispose();
     }
 
-    public async ValueTask DisposeAsync()
+    public ValueTask DisposeAsync()
     {
-        GC.SuppressFinalize(this);
-
-        await _client.DisposeAsync().NoSync();
+         return _client.DisposeAsync();
     }
 }
