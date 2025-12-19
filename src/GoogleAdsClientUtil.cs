@@ -17,7 +17,7 @@ public sealed class GoogleAdsClientUtil: IGoogleAdsClientUtil
 
     public GoogleAdsClientUtil(ILogger<GoogleAdsClientUtil> logger, IConfiguration configuration)
     {
-        _client = new AsyncSingleton<GoogleAdsClient>((_, _) =>
+        _client = new AsyncSingleton<GoogleAdsClient>(_ =>
         {
             logger.LogInformation("Connecting to Google Ads...");
 
