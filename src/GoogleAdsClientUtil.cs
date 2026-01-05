@@ -14,22 +14,28 @@ namespace Soenneker.Google.Ads.Client;
 public sealed class GoogleAdsClientUtil: IGoogleAdsClientUtil
 {
     private readonly AsyncSingleton<GoogleAdsClient> _client;
+    private readonly ILogger<GoogleAdsClientUtil> _logger;
+    private readonly IConfiguration _configuration;
 
     public GoogleAdsClientUtil(ILogger<GoogleAdsClientUtil> logger, IConfiguration configuration)
     {
-        _client = new AsyncSingleton<GoogleAdsClient>(_ =>
+        _logger = logger;
+        _configuration = configuration;
+        _client = new AsyncSingleton<GoogleAdsClient>(CreateClient);
+    }
+
+    private GoogleAdsClient CreateClient(CancellationToken _)
+    {
+        _logger.LogInformation("Connecting to Google Ads...");
+
+        var config = new GoogleAdsConfig
         {
-            logger.LogInformation("Connecting to Google Ads...");
+            DeveloperToken = _configuration.GetValueStrict<string>("Google:Ads:DeveloperToken"),
+            OAuth2ClientId = _configuration.GetValueStrict<string>("Google:Ads:ClientId"),
+            OAuth2ClientSecret = _configuration.GetValueStrict<string>("Google:Ads:ClientSecret")
+        };
 
-            var config = new GoogleAdsConfig
-            {
-                DeveloperToken = configuration.GetValueStrict<string>("Google:Ads:DeveloperToken"),
-                OAuth2ClientId = configuration.GetValueStrict<string>("Google:Ads:ClientId"),
-                OAuth2ClientSecret = configuration.GetValueStrict<string>("Google:Ads:ClientSecret")
-            };
-
-            return new GoogleAdsClient(config);
-        });
+        return new GoogleAdsClient(config);
     }
 
     public ValueTask<GoogleAdsClient> Get(CancellationToken cancellationToken = default)
