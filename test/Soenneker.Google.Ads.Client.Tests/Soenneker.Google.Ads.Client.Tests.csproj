@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Soenneker.Google.Ads.Client.csproj" />
+        <ProjectReference Include="..\..\src\Soenneker.Google.Ads.Client\Soenneker.Google.Ads.Client.csproj" />
     </ItemGroup>
 
     <ItemGroup>
