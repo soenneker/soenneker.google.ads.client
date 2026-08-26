@@ -44,7 +44,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Google.Ads.GoogleAds" Version="27.1.0" />
+        <PackageReference Include="Google.Ads.GoogleAds" Version="27.2.0" />
         <PackageReference Include="Soenneker.Extensions.Configuration" Version="4.0.861" />
         <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="4.0.820" />
     </ItemGroup>
