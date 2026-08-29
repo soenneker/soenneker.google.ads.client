@@ -11,9 +11,9 @@ namespace Soenneker.Google.Ads.Client.Abstract;
 public interface IGoogleAdsClientUtil : IAsyncDisposable, IDisposable
 {
     /// <summary>
-    /// Gets the value.
+    /// Returns the configured google Ads Client used by the google ads client.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task containing the result of the operation.</returns>
+    /// <param name="cancellationToken">Token used to cancel the operation.</param>
+    /// <returns>A task whose result is the requested google Ads Client.</returns>
     ValueTask<GoogleAdsClient> Get(CancellationToken cancellationToken = default);
 }

@@ -12,6 +12,8 @@ public static class GoogleAdsClientUtilRegistrar
     /// <summary>
     /// Adds <see cref="IGoogleAdsClientUtil"/> as a singleton service. <para/>
     /// </summary>
+    /// <param name="services">Service collection that receives the registration.</param>
+    /// <returns>The same service collection, so additional registrations can be chained.</returns>
     public static IServiceCollection AddGoogleAdsClientUtilAsSingleton(this IServiceCollection services)
     {
         services.TryAddSingleton<IGoogleAdsClientUtil, GoogleAdsClientUtil>();
@@ -22,6 +24,8 @@ public static class GoogleAdsClientUtilRegistrar
     /// <summary>
     /// Adds <see cref="IGoogleAdsClientUtil"/> as a scoped service. <para/>
     /// </summary>
+    /// <param name="services">Service collection that receives the registration.</param>
+    /// <returns>The same service collection, so additional registrations can be chained.</returns>
     public static IServiceCollection AddGoogleAdsClientUtilAsScoped(this IServiceCollection services)
     {
         services.TryAddScoped<IGoogleAdsClientUtil, GoogleAdsClientUtil>();
