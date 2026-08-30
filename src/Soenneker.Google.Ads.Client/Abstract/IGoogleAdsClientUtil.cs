@@ -6,14 +6,14 @@ using System.Threading;
 namespace Soenneker.Google.Ads.Client.Abstract;
 
 /// <summary>
-/// An async thread-safe singleton for the Google Ads client
+/// Provides one lazily initialized, thread-safe <see cref="GoogleAdsClient"/> for the lifetime of the provider.
 /// </summary>
 public interface IGoogleAdsClientUtil : IAsyncDisposable, IDisposable
 {
     /// <summary>
-    /// Returns the configured google Ads Client used by the google ads client.
+    /// Gets or creates the configured Google Ads client.
     /// </summary>
     /// <param name="cancellationToken">Token used to cancel the operation.</param>
-    /// <returns>A task whose result is the requested google Ads Client.</returns>
+    /// <returns>The shared client owned by this provider.</returns>
     ValueTask<GoogleAdsClient> Get(CancellationToken cancellationToken = default);
 }

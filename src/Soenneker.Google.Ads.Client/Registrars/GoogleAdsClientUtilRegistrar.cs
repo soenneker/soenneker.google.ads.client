@@ -5,7 +5,7 @@ using Soenneker.Google.Ads.Client.Abstract;
 namespace Soenneker.Google.Ads.Client.Registrars;
 
 /// <summary>
-/// An async thread-safe singleton for the Google Ads client
+/// Registers the lazy Google Ads client provider.
 /// </summary>
 public static class GoogleAdsClientUtilRegistrar
 {

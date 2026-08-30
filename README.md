@@ -5,7 +5,7 @@
 
 # Soenneker.Google.Ads.Client
 
-An async thread-safe singleton for the Google Ads client.
+A lazy, thread-safe `GoogleAdsClient` provider with dependency-injection registration and deterministic disposal.
 
 ## Install
 
@@ -13,32 +13,65 @@ An async thread-safe singleton for the Google Ads client.
 dotnet add package Soenneker.Google.Ads.Client
 ```
 
-## Quick start
+## Configuration
+
+```json
+{
+  "Google": {
+    "Ads": {
+      "DeveloperToken": "<developer token>",
+      "ClientId": "<OAuth client ID>",
+      "ClientSecret": "<OAuth client secret>"
+    }
+  }
+}
+```
+
+The values are read when `Get()` first creates the client, not during service registration.
+
+## Registration
 
 ```csharp
 using Soenneker.Google.Ads.Client.Registrars;
 using Microsoft.Extensions.DependencyInjection;
 
-var services = new ServiceCollection();
-var result = services.AddGoogleAdsClientUtilAsSingleton();
+services.AddGoogleAdsClientUtilAsSingleton();
 ```
 
-Adds `IGoogleAdsClientUtil` as a singleton service.
+Singleton registration is the normal choice for this package: callers and scoped utilities can share the long-lived Google Ads client while their own scopes are disposed independently.
 
-## What you get
+`AddGoogleAdsClientUtilAsScoped()` is available when a separate client really is required per scope; disposing the scope then disposes that scope's provider and client.
 
-- `IGoogleAdsClientUtil` — An async thread-safe singleton for the Google Ads client.
-- `GoogleAdsClientUtilRegistrar` — An async thread-safe singleton for the Google Ads client.
+## Usage
+
+```csharp
+public sealed class CampaignReader
+{
+    private readonly IGoogleAdsClientUtil _clientUtil;
+
+    public CampaignReader(IGoogleAdsClientUtil clientUtil)
+    {
+        _clientUtil = clientUtil;
+    }
+
+    public async ValueTask<GoogleAdsClient> GetClient(CancellationToken cancellationToken)
+    {
+        return await _clientUtil.Get(cancellationToken);
+    }
+}
+```
+
+Every `Get()` call on the same provider returns the same lazily created `GoogleAdsClient`. Concurrent first calls share one initialization.
 
 ## API at a glance
 
 | API | What it does | Result / important behavior |
 | --- | --- | --- |
-| `GoogleAdsClientUtilRegistrar.AddGoogleAdsClientUtilAsSingleton(services)` | Adds `IGoogleAdsClientUtil` as a singleton service. | The same service collection, so additional registrations can be chained. |
-| `GoogleAdsClientUtilRegistrar.AddGoogleAdsClientUtilAsScoped(services)` | Adds `IGoogleAdsClientUtil` as a scoped service. | The same service collection, so additional registrations can be chained. |
+| `Get(cancellationToken)` | Gets or creates the configured client. | Reuses one client for the lifetime of the provider. |
+| `AddGoogleAdsClientUtilAsSingleton()` | Registers one provider for the application. | Recommended for sharing the client across scoped consumers. |
+| `AddGoogleAdsClientUtilAsScoped()` | Registers one provider per DI scope. | Each scope creates and owns a separate client. |
 
 ## Practical notes
 
-- Reuse the registered client instead of constructing one per operation.
-- Calls that return a cached or singleton value reuse the same instance until the owning service is disposed.
-- Dispose instances you own when their scope ends so held resources can be released.
+- Let the DI container dispose registered instances. If you construct `GoogleAdsClientUtil` yourself, dispose it asynchronously or synchronously when finished.
+- Cancellation affects pending lazy initialization. It does not cancel operations performed later through the returned Google Ads client.

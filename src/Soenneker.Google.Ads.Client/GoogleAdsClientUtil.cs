@@ -10,8 +10,7 @@ using System.Threading;
 
 namespace Soenneker.Google.Ads.Client;
 
-/// <inheritdoc cref="IGoogleAdsClientUtil"/>
-public sealed class GoogleAdsClientUtil: IGoogleAdsClientUtil
+public sealed class GoogleAdsClientUtil : IGoogleAdsClientUtil
 {
     private readonly AsyncSingleton<GoogleAdsClient> _client;
     private readonly ILogger<GoogleAdsClientUtil> _logger;
