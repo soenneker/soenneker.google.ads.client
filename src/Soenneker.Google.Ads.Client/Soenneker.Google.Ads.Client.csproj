@@ -44,8 +44,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Google.Ads.GoogleAds" Version="27.4.0" />
         <PackageReference Include="Soenneker.Extensions.Configuration" Version="4.0.895" />
         <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="4.0.849" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Google.Ads.Gax" Version="4.0.8" />
+        <PackageReference Include="Google.Ads.GoogleAds.Core" Version="4.0.11" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.12" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
     </ItemGroup>
 </Project>
