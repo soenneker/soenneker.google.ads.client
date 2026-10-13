@@ -30,9 +30,9 @@ public sealed class GoogleAdsClientUtil : IGoogleAdsClientUtil
 
         var config = new GoogleAdsConfig
         {
-            DeveloperToken = _configuration.GetValueStrict<string>("Google:Ads:DeveloperToken"),
-            OAuth2ClientId = _configuration.GetValueStrict<string>("Google:Ads:ClientId"),
-            OAuth2ClientSecret = _configuration.GetValueStrict<string>("Google:Ads:ClientSecret")
+            DeveloperToken = _configuration.GetStringStrict("Google:Ads:DeveloperToken"),
+            OAuth2ClientId = _configuration.GetStringStrict("Google:Ads:ClientId"),
+            OAuth2ClientSecret = _configuration.GetStringStrict("Google:Ads:ClientSecret")
         };
 
         return new GoogleAdsClient(config);
